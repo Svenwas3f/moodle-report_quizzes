@@ -25,6 +25,7 @@ $string['header_title'] = 'Quizzes overview';
 $string['header_heading'] = 'Users passed quizzes';
 
 $string['th_userid'] = 'User ID';
+$string['th_username'] = 'Username';
 $string['th_fullname'] = 'Full Name';
 $string['th_email'] = 'E-Mail';
 $string['th_phone'] = 'Phone';

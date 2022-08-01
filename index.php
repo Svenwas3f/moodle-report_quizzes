@@ -121,6 +121,7 @@ foreach ($DB->get_records_sql($sqlusers) as $user) {
     if (count($quizzespassed) > 0) {
         // Create row data array.
         $rowdata = array(
+            empty($user->id) ? $novalue : $user->id,
             empty($user->username) ? $novalue : $user->username,
             empty($user->firstname . ' ' . $user->lastname) ? $novalue : ($user->firstname  . ' ' . $user->lastname),
             empty($user->email) ? $novalue : $user->email,
@@ -138,6 +139,7 @@ foreach ($DB->get_records_sql($sqlusers) as $user) {
 $table = new html_table();
 $table->head = array( // Fill headline.
     get_string('th_userid', 'report_quizzes'),
+    get_string('th_username', 'report_quizzes'),
     get_string('th_fullname', 'report_quizzes'),
     get_string('th_email', 'report_quizzes'),
     get_string('th_phone', 'report_quizzes'),
