@@ -42,14 +42,14 @@ echo $OUTPUT->heading(format_string(get_string('header_heading', 'report_quizzes
 $tabledata = array();
 
 // Get users who submited a quiz.
-$sqlusers = "SELECT * FROM mdl_user WHERE
-    id IN (SELECT DISTINCT userid FROM mdl_quiz_attempts)";
+$sqlusers = "SELECT * FROM {user} WHERE
+    id IN (SELECT DISTINCT userid FROM {quiz_attempts})";
 
 
 // Loop users.
 foreach ($DB->get_records_sql($sqlusers) as $user) {
     // Check quizzes.
-    $sqlquizzes = "SELECT * FROM mdl_quiz";
+    $sqlquizzes = "SELECT * FROM {quiz}";
     $quizzes = $DB->get_records_sql($sqlquizzes);
 
     // Create array for passed quizzes.
@@ -59,39 +59,39 @@ foreach ($DB->get_records_sql($sqlusers) as $user) {
         // Check quiz.
         switch ($quiz->grademethod) {
             case 1: // Best attempt.
-                $sqlquizpassed = "SELECT COUNT(id) FROM mdl_quiz_attempts WHERE
+                $sqlquizpassed = "SELECT COUNT(id) FROM {quiz_attempts} WHERE
                     userid=:userid AND
                     quiz=:quiz AND
-                    sumgrades >= (SELECT gradepass FROM mdl_grade_items WHERE
+                    sumgrades >= (SELECT gradepass FROM {grade_items} WHERE
                         iteminstance=:iteminstance AND
                         itemmodule='quiz'
                     )
                     ORDER BY sumgrades DESC";
             break;
             case 2: // Average.
-                $sqlquizpassed = "SELECT COUNT(id) FROM mdl_grade_items WHERE
+                $sqlquizpassed = "SELECT COUNT(id) FROM {grade_items} WHERE
                     iteminstance=:iteminstance AND
                     itemmodule='quiz' AND
-                    gradepass >= (SELECT AVG(sumgrades) FROM mdl_quiz_attempts WHERE
+                    gradepass >= (SELECT AVG(sumgrades) FROM {quiz_attempts} WHERE
                         userid=:userid AND
                         quiz=:quiz
                     )";
             break;
             case 3: // First attempt.
-                $sqlquizpassed = "SELECT COUNT(id) FROM mdl_quiz_attempts WHERE
+                $sqlquizpassed = "SELECT COUNT(id) FROM {quiz_attempts} WHERE
                     userid=:userid AND
                     quiz=:quiz AND
-                    sumgrades >= (SELECT gradepass FROM mdl_grade_items WHERE
+                    sumgrades >= (SELECT gradepass FROM {grade_items} WHERE
                         iteminstance=:iteminstance AND
                         itemmodule='quiz'
                     )
                     ORDER BY id ASC";
             break;
             case 4: // Last attempt.
-                $sqlquizpassed = "SELECT COUNT(id) FROM mdl_quiz_attempts WHERE
+                $sqlquizpassed = "SELECT COUNT(id) FROM {quiz_attempts} WHERE
                     userid=:userid AND
                     quiz=:quiz AND
-                    sumgrades >= (SELECT gradepass FROM mdl_grade_items WHERE
+                    sumgrades >= (SELECT gradepass FROM {grade_items} WHERE
                         iteminstance=:iteminstance AND
                         itemmodule='quiz'
                     )
